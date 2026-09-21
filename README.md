@@ -20,7 +20,7 @@ No additional scripts, systemd services, or configuration are required.
 | On | Battery | Screensaver and idle lock use the normal Omarchy timeouts |
 | Off | Any | Screensaver and idle lock use the normal Omarchy timeouts |
 
-The plugin uses Quickshell's UPower service to react to power-source changes and Omarchy's built-in Idle service to control Stay Awake. It does not modify timeout values in `~/.config/omarchy/shell.json`.
+The plugin uses Quickshell's UPower service to react to power-source changes and Omarchy's built-in `omarchy toggle idle` command to control Stay Awake. It does not modify timeout values in `~/.config/omarchy/shell.json`.
 
 ## Command line
 

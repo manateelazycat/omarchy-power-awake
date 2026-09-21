@@ -9,7 +9,6 @@ Item {
 
   property var shell: null
 
-  readonly property var idleService: shell?.firstPartyServiceFor("omarchy.idle")
   readonly property bool automationEnabled: persisted.automationEnabled
   readonly property bool onBattery: UPower.onBattery
   readonly property bool pluggedIn: !onBattery
@@ -17,6 +16,8 @@ Item {
   readonly property string tooltipText: PowerAwakeModel.statusText(automationEnabled, onBattery)
 
   property bool ready: false
+  property bool applied: false
+  property var pendingIdleEnabled: null
 
   PersistentProperties {
     id: persisted
@@ -25,16 +26,25 @@ Item {
   }
 
   function applyPowerState() {
-    if (!root.idleService) return false
-
-    var desiredIdleEnabled = PowerAwakeModel.idleShouldBeEnabled(root.automationEnabled, root.onBattery)
-    var currentlyIdleEnabled = !root.idleService.stayAwake
+    root.pendingIdleEnabled = PowerAwakeModel.idleShouldBeEnabled(root.automationEnabled, root.onBattery)
     root.ready = true
-
-    if (currentlyIdleEnabled !== desiredIdleEnabled)
-      root.idleService.setIdleEnabled(desiredIdleEnabled)
-
+    root.runPendingPowerState()
     return true
+  }
+
+  function runPendingPowerState() {
+    if (applyProcess.running || root.pendingIdleEnabled === null) return
+
+    var idleEnabled = root.pendingIdleEnabled === true
+    root.pendingIdleEnabled = null
+    root.applied = false
+    applyProcess.command = [
+      "omarchy",
+      "toggle",
+      "idle",
+      idleEnabled ? "allow-idle" : "stay-awake"
+    ]
+    applyProcess.running = true
   }
 
   function setAutomationEnabled(value) {
@@ -54,8 +64,21 @@ Item {
       pluggedIn: root.pluggedIn,
       stayAwake: root.stayAwake,
       idleEnabled: !root.stayAwake,
-      applied: root.ready
+      applied: root.applied
     })
+  }
+
+  Process {
+    id: applyProcess
+
+    onExited: function(exitCode) {
+      if (root.pendingIdleEnabled !== null) {
+        root.runPendingPowerState()
+        return
+      }
+
+      root.applied = exitCode === 0
+    }
   }
 
   onShellChanged: Qt.callLater(root.applyPowerState)
@@ -81,7 +104,7 @@ Item {
   Component.onCompleted: Qt.callLater(root.applyPowerState)
 
   Component.onDestruction: {
-    if (root.idleService && root.automationEnabled)
-      root.idleService.setIdleEnabled(true)
+    if (root.automationEnabled)
+      Quickshell.execDetached(["omarchy", "toggle", "idle", "allow-idle"])
   }
 }
