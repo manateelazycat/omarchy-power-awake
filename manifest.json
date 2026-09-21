@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.manateelazycat.power-awake",
+  "name": "Omarchy Power Awake",
+  "version": "0.1.0",
+  "author": "ManateeLazyCat",
+  "license": "GPL-3.0-only",
+  "description": "Automatically stays awake while plugged in and restores the screensaver and lock screen on battery power.",
+  "kinds": [
+    "service",
+    "bar-widget"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Omarchy Power Awake",
+    "description": "Toggle automatic stay-awake behavior based on the laptop power source.",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "center"
+  }
+}
