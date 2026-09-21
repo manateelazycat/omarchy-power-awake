@@ -1,5 +1,7 @@
 # Omarchy Power Awake
 
+![Omarchy Power Awake](https://github.com/user-attachments/assets/977c4dc4-0d05-4083-8d36-2734cbbc4147)
+
 Automatically stays awake while plugged in and restores the screensaver and lock screen on battery power.
 
 The plugin adds a power-plug icon to the center of the Omarchy bar. Click the icon to turn the automation on or off. The option is enabled by default and the selected state persists across shell restarts.
