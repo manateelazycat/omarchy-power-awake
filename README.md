@@ -1,6 +1,6 @@
 # Omarchy Power Awake
 
-![Omarchy Power Awake](https://github.com/user-attachments/assets/977c4dc4-0d05-4083-8d36-2734cbbc4147)
+![Omarchy Power Awake](preview.jpg)
 
 Automatically stays awake while plugged in and restores the screensaver and lock screen on battery power.
 
