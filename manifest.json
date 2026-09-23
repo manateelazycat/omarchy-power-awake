@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "io.github.manateelazycat.power-awake",
   "name": "Omarchy Power Awake",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "ManateeLazyCat",
   "license": "GPL-3.0-only",
   "description": "Automatically stays awake while plugged in and restores the screensaver and lock screen on battery power.",
