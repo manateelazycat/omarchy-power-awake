@@ -9,25 +9,34 @@ Item {
 
   property var shell: null
 
-  readonly property bool automationEnabled: persisted.automationEnabled
+  readonly property bool automationEnabled: settings.automationEnabled
   readonly property bool onBattery: UPower.onBattery
+  readonly property bool hasLaptopBattery: PowerAwakeModel.hasLaptopBattery(UPower.displayDevice)
   readonly property bool pluggedIn: !onBattery
-  readonly property bool stayAwake: PowerAwakeModel.shouldStayAwake(automationEnabled, onBattery)
-  readonly property string tooltipText: PowerAwakeModel.statusText(automationEnabled, onBattery)
+  readonly property bool stayAwake: PowerAwakeModel.shouldStayAwake(automationEnabled, onBattery, hasLaptopBattery)
+  readonly property string tooltipText: PowerAwakeModel.statusText(automationEnabled, onBattery, hasLaptopBattery)
 
   property bool ready: false
   property bool applied: false
   property var pendingIdleEnabled: null
   property int applyRetries: 0
 
-  PersistentProperties {
-    id: persisted
-    reloadableId: "io-github-manateelazycat-power-awake"
-    property bool automationEnabled: true
+  FileView {
+    id: settingsFile
+    path: Quickshell.statePath("io.github.manateelazycat.power-awake.json")
+    blockLoading: true
+    printErrors: false
+    onAdapterUpdated: writeAdapter()
+
+    JsonAdapter {
+      id: settings
+      property bool automationEnabled: true
+    }
   }
 
   function applyPowerState() {
-    root.pendingIdleEnabled = PowerAwakeModel.idleShouldBeEnabled(root.automationEnabled, root.onBattery)
+    settingsFile.text()
+    root.pendingIdleEnabled = PowerAwakeModel.idleShouldBeEnabled(root.automationEnabled, root.onBattery, root.hasLaptopBattery)
     root.applyRetries = 0
     retryTimer.stop()
     root.ready = true
@@ -50,7 +59,7 @@ Item {
   }
 
   function setAutomationEnabled(value) {
-    persisted.automationEnabled = !!value
+    settings.automationEnabled = !!value
     Qt.callLater(root.applyPowerState)
     return root.statusJson()
   }
@@ -63,6 +72,8 @@ Item {
     return JSON.stringify({
       enabled: root.automationEnabled,
       onBattery: root.onBattery,
+      hasLaptopBattery: root.hasLaptopBattery,
+      desktop: !root.hasLaptopBattery,
       pluggedIn: root.pluggedIn,
       stayAwake: root.stayAwake,
       idleEnabled: !root.stayAwake,
@@ -92,13 +103,14 @@ Item {
     interval: 1000
     repeat: false
     onTriggered: {
-      root.pendingIdleEnabled = PowerAwakeModel.idleShouldBeEnabled(root.automationEnabled, root.onBattery)
+      root.pendingIdleEnabled = PowerAwakeModel.idleShouldBeEnabled(root.automationEnabled, root.onBattery, root.hasLaptopBattery)
       root.runPendingPowerState()
     }
   }
 
   onShellChanged: Qt.callLater(root.applyPowerState)
   onAutomationEnabledChanged: Qt.callLater(root.applyPowerState)
+  onHasLaptopBatteryChanged: Qt.callLater(root.applyPowerState)
 
   Connections {
     target: UPower

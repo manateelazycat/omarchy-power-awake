@@ -8,7 +8,7 @@ BarWidget {
 
   readonly property var powerAwakeService: bar?.shell?.serviceFor(root.moduleName)
   readonly property bool automationEnabled: powerAwakeService ? powerAwakeService.automationEnabled : true
-  readonly property bool onBattery: powerAwakeService ? powerAwakeService.onBattery : false
+  readonly property bool stayAwake: powerAwakeService ? powerAwakeService.stayAwake : false
 
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
@@ -18,7 +18,7 @@ BarWidget {
     anchors.fill: parent
     bar: root.bar
     text: "󰚥"
-    active: root.automationEnabled && !root.onBattery
+    active: root.stayAwake
     useActiveColor: false
     dimmed: !root.automationEnabled
     slotSize: Style.bar.statusSlot

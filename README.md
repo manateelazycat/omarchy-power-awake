@@ -2,9 +2,9 @@
 
 ![Omarchy Power Awake](preview.jpg)
 
-Automatically stays awake while plugged in and restores the screensaver and lock screen on battery power.
+Keeps desktops awake and automatically stays awake on laptops while plugged in, restoring the screensaver and lock screen on laptop battery power.
 
-The plugin adds a power-plug icon to the center of the Omarchy bar. Click the icon to turn the automation on or off. The option is enabled by default when the shell starts.
+The plugin adds a power-plug icon to the center of the Omarchy bar. Click the icon to turn the option on or off. The option is enabled by default on first use, and your selection persists across shell restarts.
 
 ## Install
 
@@ -16,13 +16,14 @@ No additional scripts, systemd services, or configuration are required.
 
 ## Behavior
 
-| Option | Power source | Result |
+| Option | Machine / power source | Result |
 | --- | --- | --- |
-| On | Plugged in | Screensaver and idle lock are disabled |
-| On | Battery | Screensaver and idle lock use the normal Omarchy timeouts |
+| On | Desktop (no laptop battery) | Screensaver and idle lock are disabled |
+| On | Laptop plugged in | Screensaver and idle lock are disabled |
+| On | Laptop on battery | Screensaver and idle lock use the normal Omarchy timeouts |
 | Off | Any | Screensaver and idle lock use the normal Omarchy timeouts |
 
-The plugin uses Quickshell's UPower service to react to power-source changes and Omarchy's idle service IPC to control Stay Awake. It does not modify timeout values in `~/.config/omarchy/shell.json`.
+The plugin uses Quickshell's UPower service to detect a laptop battery and react to power-source changes, and Omarchy's idle service IPC to control Stay Awake. Wireless peripheral batteries do not make a desktop count as a laptop. It does not modify timeout values in `~/.config/omarchy/shell.json`.
 
 ## Command line
 
