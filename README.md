@@ -4,7 +4,7 @@
 
 Automatically stays awake while plugged in and restores the screensaver and lock screen on battery power.
 
-The plugin adds a power-plug icon to the center of the Omarchy bar. Click the icon to turn the automation on or off. The option is enabled by default and the selected state persists across shell restarts.
+The plugin adds a power-plug icon to the center of the Omarchy bar. Click the icon to turn the automation on or off. The option is enabled by default when the shell starts.
 
 ## Install
 
@@ -22,7 +22,7 @@ No additional scripts, systemd services, or configuration are required.
 | On | Battery | Screensaver and idle lock use the normal Omarchy timeouts |
 | Off | Any | Screensaver and idle lock use the normal Omarchy timeouts |
 
-The plugin uses Quickshell's UPower service to react to power-source changes and Omarchy's built-in `omarchy toggle idle` command to control Stay Awake. It does not modify timeout values in `~/.config/omarchy/shell.json`.
+The plugin uses Quickshell's UPower service to react to power-source changes and Omarchy's idle service IPC to control Stay Awake. It does not modify timeout values in `~/.config/omarchy/shell.json`.
 
 ## Command line
 

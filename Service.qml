@@ -18,6 +18,7 @@ Item {
   property bool ready: false
   property bool applied: false
   property var pendingIdleEnabled: null
+  property int applyRetries: 0
 
   PersistentProperties {
     id: persisted
@@ -27,6 +28,8 @@ Item {
 
   function applyPowerState() {
     root.pendingIdleEnabled = PowerAwakeModel.idleShouldBeEnabled(root.automationEnabled, root.onBattery)
+    root.applyRetries = 0
+    retryTimer.stop()
     root.ready = true
     root.runPendingPowerState()
     return true
@@ -39,10 +42,9 @@ Item {
     root.pendingIdleEnabled = null
     root.applied = false
     applyProcess.command = [
-      "omarchy",
-      "toggle",
+      "omarchy-shell",
       "idle",
-      idleEnabled ? "allow-idle" : "stay-awake"
+      idleEnabled ? "enable" : "disable"
     ]
     applyProcess.running = true
   }
@@ -78,6 +80,20 @@ Item {
       }
 
       root.applied = exitCode === 0
+      if (!root.applied && root.applyRetries < 30) {
+        root.applyRetries++
+        retryTimer.start()
+      }
+    }
+  }
+
+  Timer {
+    id: retryTimer
+    interval: 1000
+    repeat: false
+    onTriggered: {
+      root.pendingIdleEnabled = PowerAwakeModel.idleShouldBeEnabled(root.automationEnabled, root.onBattery)
+      root.runPendingPowerState()
     }
   }
 
