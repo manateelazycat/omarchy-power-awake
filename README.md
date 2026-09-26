@@ -1,5 +1,7 @@
 # Omarchy Power Awake
 
+English | [简体中文](README.zh-CN.md)
+
 ![Omarchy Power Awake](preview.jpg)
 
 Keeps desktops awake and automatically stays awake on laptops while plugged in, restoring the screensaver and lock screen on laptop battery power.
