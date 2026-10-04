@@ -6,7 +6,7 @@ English | [简体中文](README.zh-CN.md)
 
 Keeps desktops awake and automatically stays awake on laptops while plugged in, restoring the screensaver and lock screen on laptop battery power.
 
-The plugin adds a power-plug icon to the center of the Omarchy bar. Click the icon to turn the option on or off. The option is enabled by default on first use, and your selection persists across shell restarts.
+The plugin adds a power-plug icon to the right side of the Omarchy bar. Click the icon to turn the option on or off. The option is enabled by default on first use, and your selection persists across shell restarts.
 
 ## Install
 

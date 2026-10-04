@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "io.github.manateelazycat.power-awake",
   "name": "Omarchy Power Awake",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "ManateeLazyCat",
   "license": "GPL-3.0-only",
   "description": "Keeps desktops awake and manages laptop idle behavior based on the power source.",
@@ -20,6 +20,6 @@
     "description": "Toggle desktop stay-awake or automatic laptop power-based idle behavior.",
     "category": "System",
     "allowMultiple": false,
-    "defaultSection": "center"
+    "defaultSection": "right"
   }
 }
