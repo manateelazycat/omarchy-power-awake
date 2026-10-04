@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Commons
 import qs.Ui
@@ -8,7 +9,7 @@ BarWidget {
 
   readonly property var powerAwakeService: bar?.shell?.serviceFor(root.moduleName)
   readonly property bool automationEnabled: powerAwakeService ? powerAwakeService.automationEnabled : true
-  readonly property bool stayAwake: powerAwakeService ? powerAwakeService.stayAwake : false
+  readonly property bool stayAwake: powerAwakeService?.stayAwake === true
 
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
@@ -17,12 +18,15 @@ BarWidget {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: "󰚥"
+    iconComponent: Component {
+      PowerAwakeIcon {
+        color: button.foreground
+      }
+    }
     active: root.stayAwake
     useActiveColor: false
-    dimmed: !root.automationEnabled
-    slotSize: Style.bar.statusSlot
-    fontSize: Style.font.caption
+    dimmed: false
+    slotSize: Style.bar.iconSlot
     tooltipText: root.powerAwakeService
       ? root.powerAwakeService.tooltipText
       : "Power Awake is starting"
