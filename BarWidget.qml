@@ -1,6 +1,7 @@
+import "CompatUi" as ThemeUi
 pragma ComponentBehavior: Bound
 import QtQuick
-import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 BarWidget {
@@ -14,7 +15,7 @@ BarWidget {
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
 
-  BarIconButton {
+  ThemeUi.BarIconButton {
     id: button
     anchors.fill: parent
     bar: root.bar
@@ -26,7 +27,7 @@ BarWidget {
     active: root.stayAwake
     useActiveColor: false
     dimmed: false
-    slotSize: Style.bar.iconSlot
+    slotSize: Commons.Style.bar.iconSlot
     tooltipText: root.powerAwakeService
       ? root.powerAwakeService.tooltipText
       : "Power Awake is starting"
